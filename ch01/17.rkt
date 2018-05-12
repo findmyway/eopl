@@ -5,7 +5,6 @@
  ;; wrap parentheses around each top-level element in lst
  down)
 
-(define down
-  (lambda (lst)
-    (map (lambda (x) (cons x '())) lst)))
+(define (down lst)
+  (map (lambda (x) (cons x '())) lst))
 
