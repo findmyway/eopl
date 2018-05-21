@@ -1,5 +1,13 @@
 #lang eopl
 
+(require racket/trace)
+
+(provide
+ red-node
+ blue-node
+ leaf-node
+ mark-leaves)
+
 (define-datatype red-blue-tree red-blue-tree?
   (red-node (a red-blue-tree?)
             (b red-blue-tree?))
@@ -19,7 +27,10 @@
                              (mark-leaves-help b (+ 1 c))))
          (blue-node (tree-lst)
                     (if (null? tree-lst)
-                        '()
-                        (cons (mark-leaves-help (car tree-lst) c)
-                              (mark-leaves-help (blue-node (cdr tree-lst)) c))))
+                        (blue-node '())
+                        (blue-node (map (lambda (x) (mark-leaves-help x c))
+                                        tree-lst))))
          (leaf-node (n) (leaf-node c))))
+
+(define (mark-leaves t)
+  (mark-leaves-help t 0))
