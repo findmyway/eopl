@@ -1,5 +1,11 @@
 #lang eopl
 
+(provide
+ lc-exp
+ var-exp
+ lambda-exp
+ app-exp)
+
 (define-datatype lc-exp lc-exp?
   (var-exp
    (var identifier?))
