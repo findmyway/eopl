@@ -42,11 +42,6 @@
                 (bool-val #t)))
 
 (test-case
-    "unary-exp"
-  (check-equal? (value-of-program (scan&parse "zero?(minus(0))"))
-                (bool-val #t)))
-
-(test-case
     "list operations"
   (check-equal? (value-of-program
                  (scan&parse "let x = 4
@@ -55,7 +50,7 @@
                                                   emptylist),
                                              emptylist))"))
                 (cons-val (num-val 4) (cons-val (cons-val (num-val 3) (emptylist-val))
-                                                (emptylist-val)))))
+                                      (emptylist-val)))))
 
 (test-case
     "list"
@@ -66,3 +61,16 @@
                           (cons-val (num-val 3)
                                     (cons-val (num-val 1)
                                               (emptylist-val))))))
+
+(test-case
+    "cond"
+  (check-equal? (value-of-program
+                 (scan&parse "cond zero?(0) ==> 3 end"))
+                (num-val 3))
+  (check-equal? (value-of-program
+                 (scan&parse "cond
+                                  zero?(1) ==> 3
+                                  null?(list()) ==> +(1,1)
+                              end"))
+                (num-val 2))
+  (check-exn exn:fail? (lambda () (value-of-program (scan&parse "cond zero?(1) ==> 3 end")))))

@@ -33,6 +33,15 @@
                       (value-of body
                                 (extend-env var val1 env))))
 
+           (cond-exp (conditions bodies)
+                     (if (null? conditions)
+                         (eopl:error 'cond-exp "no condition satisfy")
+                         (if (expval->bool (value-of (car conditions) env))
+                             (value-of (car bodies) env)
+                             (value-of (cond-exp (cdr conditions)
+                                                 (cdr bodies))
+                                       env))))
+
            (nullary-exp (op)
                         (case op
                           [("emptylist") (emptylist-val)]
