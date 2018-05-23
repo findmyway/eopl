@@ -5,13 +5,15 @@
 (define the-lexical-spec
   '((whitespace (whitespace) skip)
     (comment ("%" (arbno (not #\newline))) skip)
-    (identifier (letter (arbno (or letter digit "_" "-" "?"))) symbol)
-    (number (digit (arbno digit)) number)
+
+    (nullary-op ("emptylist") string)
+    (unary-op ((or "zero?" "minus" "car" "cdr" "null?")) string)
+    (binary-op ((or "+" "-" "*" "/" "equal?" "less?" "greater?" "cons")) string)
+    (n-arg-op ("list") string)
+
     (number ("-" digit (arbno digit)) number)
-    (nullary-op ("emptylist") symbol)
-    (unary-op ((or "zero?" "minus" "car" "cdr" "null?")) symbol)
-    (binary-op ((or "+" "-" "*" "/" "equal?" "less?" "greater?" "cons")) symbol)
-    (n-arg-op ("list") symbol)))
+    (identifier (letter (arbno (or letter digit "_" "-" "?"))) symbol)
+    (number (digit (arbno digit)) number)))
 
 (define the-grammar
   '((program (expression) a-program)
